@@ -6,11 +6,11 @@
 /*   By: khoukouj <khoukouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 12:43:31 by khoukouj          #+#    #+#             */
-/*   Updated: 2024/12/22 15:23:11 by khoukouj         ###   ########.fr       */
+/*   Updated: 2024/12/29 10:14:27 by khoukouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../minitalk.h"
 
 int	parsing_args(int ac, char **av)
 {
@@ -19,7 +19,7 @@ int	parsing_args(int ac, char **av)
 	i = 0;
 	if (ac != 3)
 	{
-		ft_printf("Try runing: ./%s <server's PID> <message>\n", av[0]);
+		ft_printf("\n\tTry runing: %s <server's PID> <message>\n\n", av[0]);
 		return (1);
 	}
 	if (av[1][i] == '+')
@@ -38,16 +38,16 @@ int	parsing_args(int ac, char **av)
 	return (0);
 }
 
-void	send_chars(int pid, char *str)
+void	send_chars(int pid, char *str, int j)
 {
 	int		i;
-	int		j;
 	char	c;
 
 	i = 0;
 	while (str[i])
 	{
-		1 && (c = str[i], j = 7);
+		c = str[i];
+		j = 7;
 		while (j >= 0)
 		{
 			if ((c >> j & 1) == 1)
@@ -55,7 +55,7 @@ void	send_chars(int pid, char *str)
 				if (kill(pid, SIGUSR2) == -1)
 					return ;
 			}
-			if ((c >> j & 1) == 0)
+			else if ((c >> j & 1) == 0)
 			{
 				if (kill(pid, SIGUSR1) == -1)
 					return ;
@@ -95,7 +95,6 @@ int	main(int ac, char **av)
 		return (1);
 	if (kill(pid, 0) == -1)
 		return (ft_printf("Invalid PID\n"), 1);
-	send_chars(pid, av[2]);
-	ft_printf("\x1b[32mMessage sent !\x1b[0m\n");
+	send_chars(pid, av[2], 0);
 	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: khoukouj <khoukouj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 17:10:27 by khoukouj          #+#    #+#             */
-/*   Updated: 2024/12/22 15:02:39 by khoukouj         ###   ########.fr       */
+/*   Updated: 2024/12/29 10:14:22 by khoukouj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../minitalk.h"
 
 void	handler(int signo, siginfo_t *info, void *content)
 {
@@ -71,4 +71,5 @@ int	main(int ac, char *av[])
 	sa_setup();
 	while (1)
 		pause();
+	return (0);
 }

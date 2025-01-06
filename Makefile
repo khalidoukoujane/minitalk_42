@@ -1,27 +1,33 @@
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-CLIENT = client
 SERVER = server
-LIBPRINTF = libftprintf/libftprintf.a
-CLIENT_SRC = client.c
-SERVER_SRC = server.c
+CLIENT = client
+CFLAGS = -Wall -Werror -Wextra
+CC = cc
+PRINTF_SRC = ft_printf/ft_itoa.c ft_printf/ft_print_args.c ft_printf/ft_print_hex.c \
+			ft_printf/ft_printf.c ft_printf/ft_printf_utils.c
+PRINTF_OBJ = $(PRINTF_SRC:.c=.o)
+C_SRC = ./mandatory/client.c
+S_SRC = ./mandatory/server.c
+C_OBJ = $(C_SRC:.c=.o)
+S_OBJ = $(S_SRC:.c=.o)
 
-all : $(CLIENT) $(SERVER)
+all : $(SERVER) $(CLIENT)
 
-$(SERVER) : $(LIBPRINTF) minitalk.h
-	$(CC) $(CFLAGS) $(SERVER_SRC) $< -o $@
+$(CLIENT): $(C_OBJ) $(PRINTF_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
-$(CLIENT) : $(LIBPRINTF) minitalk.h
-	$(CC) $(CFLAGS) $(CLIENT_SRC) $< -o $@
+$(SERVER): $(S_OBJ) $(PRINTF_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
-$(LIBPRINTF) :
-	make -C ./libftprintf
+mandatory/%.o : mandatory/%.c minitalk.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean :
-	make -C ./libftprintf clean
+ft_printf/%.o : ft_printf/%.c ft_printf/ft_printf.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-fclean : clean
-	rm -f $(CLIENT) $(SERVER)
-	make -C ./libftprintf fclean
+clean:
+	rm -rf $(C_OBJ) $(S_OBJ) $(PRINTF_OBJ)
 
-re : fclean all
+fclean: clean
+	rm -f $(SERVER) $(CLIENT)
+
+re: fclean all
